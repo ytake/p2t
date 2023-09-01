@@ -2,6 +2,12 @@
  
 parquet to table stdout
 
+## Installation
+
+```bash
+$ go install github.com/ytake/p2t@latest
+```
+
 ## Usage
 
 ### For Snowflake
