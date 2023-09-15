@@ -14,7 +14,7 @@ func TestNameWithType_Name(t *testing.T) {
 		t.Errorf("got %v\nwant %v", col, expect)
 	}
 	col = NameWithType{}.Name(Column{Name: "test_created_at", Type: "VARCHAR"})
-	expect = "TEST_CREATED_AT VARCHAR"
+	expect = "TEST_CREATED_AT TIMESTAMP"
 	if col != expect {
 		t.Errorf("got %v\nwant %v", col, expect)
 	}
@@ -27,7 +27,7 @@ func TestNameWithType_Indent(t *testing.T) {
 		t.Errorf("got %v\nwant %v", col, expect)
 	}
 	col = NameWithType{}.Indent(Column{Name: "test_created_at", Type: "VARCHAR"})
-	expect = "    TEST_CREATED_AT VARCHAR"
+	expect = "    TEST_CREATED_AT TIMESTAMP"
 	if col != expect {
 		t.Errorf("got %v\nwant %v", col, expect)
 	}
@@ -49,7 +49,7 @@ func TestCreateTable_Generate(t *testing.T) {
     IP_ADDRESS VARCHAR,
     CC VARCHAR,
     COUNTRY VARCHAR,
-    BIRTHDATE VARCHAR,
+    BIRTHDATE DATE,
     SALARY FLOAT,
     TITLE VARCHAR,
     COMMENTS VARCHAR

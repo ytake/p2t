@@ -11,7 +11,8 @@ type NameWithType struct{}
 
 // Name is a with type method for getting fully qualified name.
 func (n NameWithType) Name(c Column) string {
-	return fmt.Sprintf("%s %s", c.UpperName(), c.DetectTypeName().String())
+	casts := c.DetectTypeName().ColumnCast()
+	return fmt.Sprintf("%s %s", c.UpperName(), casts[len(casts)-1])
 }
 
 // Indent is a with type method for getting indent column name.
