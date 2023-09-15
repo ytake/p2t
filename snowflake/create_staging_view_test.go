@@ -39,7 +39,7 @@ func TestCreateView_Generate(t *testing.T) {
 		t.Fatal(err)
 	}
 	s := NewDDL(pf.Schema(), value.View).Transform()
-	expect := `CREATE OR REPLACE TABLE REPLACE.ME (
+	expect := `CREATE OR REPLACE VIEW REPLACE.ME (
     REGISTRATION_DTTM,
     ID,
     FIRST_NAME,
