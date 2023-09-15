@@ -27,7 +27,7 @@ func (c *CreateView) Generate() string {
 }
 
 func (c *CreateView) createSQL(cols, rows []string) string {
-	sql := `CREATE OR REPLACE TABLE REPLACE.ME (
+	sql := `CREATE OR REPLACE VIEW REPLACE.ME (
 %s
 ) AS 
 SELECT
