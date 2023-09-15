@@ -8,18 +8,18 @@ import (
 )
 
 var datetimeName = [...]string{
-	"created_at",
-	"updated_at",
-	"deleted_at",
-	"published_at",
-	"expired_at",
-	"start_at",
-	"end_at",
-	"datetime",
-	"timestamp",
-	"created",
-	"updated",
-	"deleted",
+	"CREATED_AT",
+	"UPDATED_AT",
+	"DELETED_AT",
+	"PUBLISHED_AT",
+	"EXPIRED_AT",
+	"START_AT",
+	"END_AT",
+	"DATETIME",
+	"TIMESTAMP",
+	"CREATED",
+	"UPDATED",
+	"DELETED",
 }
 
 var floatType = [...]string{
@@ -49,6 +49,7 @@ var timestampType = [...]string{
 type ColumnTyper interface {
 	String() string
 	ColumnCast() []string
+	ToUpperName() string
 }
 
 type NumberType struct {
@@ -63,6 +64,10 @@ func (n NumberType) ColumnCast() []string {
 	return []string{n.String()}
 }
 
+func (n NumberType) ToUpperName() string {
+	return strings.ToUpper(n.name)
+}
+
 type FloatType struct {
 	name string
 }
@@ -73,6 +78,10 @@ func (f FloatType) String() string {
 
 func (f FloatType) ColumnCast() []string {
 	return []string{f.String()}
+}
+
+func (f FloatType) ToUpperName() string {
+	return strings.ToUpper(f.name)
 }
 
 type VarCharType struct {
@@ -86,7 +95,7 @@ func (v VarCharType) String() string {
 // IsDatetimeType is a method for checking date type.
 func (v VarCharType) IsDatetimeType() bool {
 	for _, r := range datetimeName {
-		if strings.HasSuffix(v.name, r) {
+		if strings.HasSuffix(v.ToUpperName(), r) {
 			return true
 		}
 	}
@@ -94,7 +103,7 @@ func (v VarCharType) IsDatetimeType() bool {
 }
 
 func (v VarCharType) IsDateType() bool {
-	if strings.HasSuffix(v.name, "date") {
+	if strings.HasSuffix(v.ToUpperName(), "DATE") {
 		return true
 	}
 	return false
@@ -115,6 +124,10 @@ func (v VarCharType) ColumnCast() []string {
 	return append(s, v.extendedCast()...)
 }
 
+func (v VarCharType) ToUpperName() string {
+	return strings.ToUpper(v.name)
+}
+
 type BinaryType struct {
 	name string
 }
@@ -125,6 +138,10 @@ func (b BinaryType) String() string {
 
 func (b BinaryType) ColumnCast() []string {
 	return []string{b.String()}
+}
+
+func (b BinaryType) ToUpperName() string {
+	return strings.ToUpper(b.name)
 }
 
 type BooleanType struct {
@@ -139,6 +156,10 @@ func (b BooleanType) ColumnCast() []string {
 	return []string{b.String()}
 }
 
+func (b BooleanType) ToUpperName() string {
+	return strings.ToUpper(b.name)
+}
+
 type DateType struct {
 	name string
 }
@@ -149,6 +170,10 @@ func (d DateType) String() string {
 
 func (d DateType) ColumnCast() []string {
 	return []string{d.String()}
+}
+
+func (d DateType) ToUpperName() string {
+	return strings.ToUpper(d.name)
 }
 
 type TimestampType struct {
@@ -163,6 +188,10 @@ func (t TimestampType) ColumnCast() []string {
 	return []string{t.String()}
 }
 
+func (t TimestampType) ToUpperName() string {
+	return strings.ToUpper(t.name)
+}
+
 type VariantType struct {
 	name string
 }
@@ -173,6 +202,10 @@ func (v VariantType) String() string {
 
 func (v VariantType) ColumnCast() []string {
 	return []string{v.String()}
+}
+
+func (v VariantType) ToUpperName() string {
+	return strings.ToUpper(v.name)
 }
 
 type ObjectType struct{}
