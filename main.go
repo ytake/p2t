@@ -24,7 +24,7 @@ func main() {
 						Usage:    "type of ddl. choose from 'table' or 'view'",
 						Aliases:  []string{"t"},
 						Action: func(context *cli.Context, s string) error {
-							if s != string(value.Table) && s != string(value.View) {
+							if value.DDLTypeFromString(s) == value.NoDDLType {
 								return cli.Exit("invalid type", 1)
 							}
 							return nil

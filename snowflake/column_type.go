@@ -297,3 +297,7 @@ func (c Column) DetectTypeName() ColumnTyper {
 		name: c.Name,
 	}
 }
+
+func (c Column) IsNullable() bool {
+	return c.Optional
+}

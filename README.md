@@ -23,3 +23,9 @@ create table ddl from parquet file
 ```bash
 $ p2t sf -file ./example/test.parquet -t table
 ```
+
+create terraform snowflake table resource from parquet file 
+
+```bash
+$ p2t sf -file ./example/test.parquet -t tf
+```

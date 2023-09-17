@@ -35,6 +35,8 @@ func (t *DDL) Transform() string {
 		return NewCreateTable(cd).Generate()
 	case value.View:
 		return NewCreateViewFromStaging(cd).Generate()
+	case value.TerraformTableResource:
+		return NewCreateTerraformTableResource(cd).Generate()
 	}
 	return ""
 }
