@@ -52,7 +52,12 @@ func TestCreateTable_Generate(t *testing.T) {
     BIRTHDATE DATE,
     SALARY FLOAT,
     TITLE VARCHAR,
-    COMMENTS VARCHAR
+    COMMENTS VARCHAR,
+    FILENAME VARCHAR,
+    FILE_ROW_NUMBER NUMBER(38,0),
+    FILE_CONTENT_KEY VARCHAR,
+    FILE_LAST_MODIFIED TIMESTAMP_NTZ(9),
+    START_SCAN_TIME TIMESTAMP_LTZ(9)
 ) COMMENT = 'replace me';`
 	if s != expect {
 		t.Errorf("got %v\nwant %v", s, expect)

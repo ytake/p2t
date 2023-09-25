@@ -99,6 +99,31 @@ func TestCreateTableResource_Generate(t *testing.T) {
     name = "COMMENTS"
     type = "VARCHAR"
   }
+
+  column {
+    name = "FILENAME"
+    type = "VARCHAR"
+  }
+
+  column {
+    name = "FILE_ROW_NUMBER"
+    type = "NUMBER(38,0)"
+  }
+
+  column {
+    name = "FILE_CONTENT_KEY"
+    type = "VARCHAR"
+  }
+
+  column {
+    name = "FILE_LAST_MODIFIED"
+    type = "TIMESTAMP_NTZ(9)"
+  }
+
+  column {
+    name = "START_SCAN_TIME"
+    type = "TIMESTAMP_LTZ(9)"
+  }
 }`
 
 	if s != expect {

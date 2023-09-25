@@ -17,13 +17,28 @@ func NewCreateTerraformTableResource(cd []value.ColumnDefinition) *CreateTableRe
 	}
 }
 
-type TableResourceColumn struct {
+type TableResourceColumn struct{}
+type TableResourceColumnNoTypeCast struct{}
+
+// Name is a no type cast method for getting fully qualified name.
+func (n TableResourceColumnNoTypeCast) Name(c Column) string {
+	row := `
+  column {
+    name = "%s"
+    type = "%s"
+  }`
+	return fmt.Sprintf(row, c.UpperName(), c.Type)
+}
+
+// Indent is a no type cast method for getting indent column name.
+func (n TableResourceColumnNoTypeCast) Indent(c Column) string {
+	return n.Name(c)
 }
 
 // Name is a with type method for getting fully qualified name.
 func (n TableResourceColumn) Name(c Column) string {
-	casts := c.DetectTypeName().ColumnCast()
 	var row string
+	casts := c.DetectTypeName().ColumnCast()
 	if c.IsNullable() {
 		row = `
   column {
@@ -55,6 +70,18 @@ func (c *CreateTableResource) Generate() string {
 	return c.createResource(columns)
 }
 
+func (c *CreateTableResource) metaDataColumns() []string {
+	var columns []string
+	for _, v := range metaDataName {
+		t, x := metaDataType[v]
+		if x {
+			columns = append(columns,
+				TableResourceColumnNoTypeCast{}.Indent(Column{Name: v, Type: t}))
+		}
+	}
+	return columns
+}
+
 func (c *CreateTableResource) createResource(cols []string) string {
 	sql := `resource "snowflake_table" "replace_me" {
   database            = snowflake_schema.schema.database
@@ -63,5 +90,5 @@ func (c *CreateTableResource) createResource(cols []string) string {
   comment             = "A table."
 %s
 }`
-	return fmt.Sprintf(sql, strings.Join(cols, "\n"))
+	return fmt.Sprintf(sql, strings.Join(append(cols, c.metaDataColumns()...), "\n"))
 }
