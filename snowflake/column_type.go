@@ -7,6 +7,27 @@ import (
 	"github.com/ytake/p2t/value"
 )
 
+const (
+	parquetPrefix  = "$1"
+	metadataPrefix = "METADATA$"
+)
+
+var metaDataName = [...]string{
+	"FILENAME",
+	"FILE_ROW_NUMBER",
+	"FILE_CONTENT_KEY",
+	"FILE_LAST_MODIFIED",
+	"START_SCAN_TIME",
+}
+
+var metaDataType = map[string]string{
+	"FILENAME":           "VARCHAR",
+	"FILE_ROW_NUMBER":    "NUMBER(38,0)",
+	"FILE_CONTENT_KEY":   "VARCHAR",
+	"FILE_LAST_MODIFIED": "TIMESTAMP_NTZ(9)",
+	"START_SCAN_TIME":    "TIMESTAMP_LTZ(9)",
+}
+
 var datetimeName = [...]string{
 	"CREATED_AT",
 	"UPDATED_AT",
@@ -220,10 +241,6 @@ type CreateTable struct {
 type CreateView struct {
 	columns []value.ColumnDefinition
 }
-
-const (
-	ParquetPrefix = "$1"
-)
 
 // Column is a struct for column definition.
 type (

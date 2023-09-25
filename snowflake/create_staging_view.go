@@ -9,16 +9,22 @@ import (
 
 type NameWithTypeCast struct{}
 
-var metaData = []string{
-	fmt.Sprintf("    %s", "METADATA$FILE_LAST_MODIFIED AS FILE_LOAD_DATE"),
-	fmt.Sprintf("    %s", "METADATA$FILENAME AS FILE_NAME"),
-	fmt.Sprintf("    %s", "METADATA$FILE_ROW_NUMBER AS FILE_ROW_NUMBER"),
-}
-
 func NewCreateViewFromStaging(cd []value.ColumnDefinition) *CreateView {
 	return &CreateView{
 		columns: cd,
 	}
+}
+
+func (c *CreateView) indentMetaData() []string {
+	var md []string
+	for _, v := range metaDataName {
+		md = append(
+			md,
+			fmt.Sprintf(
+				"    %s AS %s",
+				fmt.Sprintf("%s%s", metadataPrefix, v), v))
+	}
+	return md
 }
 
 func (c *CreateView) Generate() string {
@@ -36,12 +42,12 @@ func (c *CreateView) createSQL(cols, rows []string) string {
 	sql := `SELECT
 %s
 FROM REPLACE.ME;`
-	return fmt.Sprintf(sql, strings.Join(append(rows, metaData...), ",\n"))
+	return fmt.Sprintf(sql, strings.Join(append(rows, c.indentMetaData()...), ",\n"))
 }
 
 // Name is a method for getting fully qualified name.
 func (n NameWithTypeCast) Name(c Column) string {
-	pn := []string{fmt.Sprintf("%s:%s", ParquetPrefix, c.Name)}
+	pn := []string{fmt.Sprintf("%s:%s", parquetPrefix, c.Name)}
 	return strings.Join(append(pn, c.DetectTypeName().ColumnCast()...), "::")
 }
 
