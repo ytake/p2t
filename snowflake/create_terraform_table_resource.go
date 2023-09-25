@@ -84,10 +84,11 @@ func (c *CreateTableResource) metaDataColumns() []string {
 
 func (c *CreateTableResource) createResource(cols []string) string {
 	sql := `resource "snowflake_table" "replace_me" {
-  database            = snowflake_schema.schema.database
-  schema              = snowflake_schema.schema.name
-  name                = "replace me"
-  comment             = "A table."
+  database = snowflake_schema.schema.database
+  schema   = snowflake_schema.schema.name
+  provider = your_snowflake_provider
+  name     = "replace me"
+  comment  = "A table."
 %s
 }`
 	return fmt.Sprintf(sql, strings.Join(append(cols, c.metaDataColumns()...), "\n"))

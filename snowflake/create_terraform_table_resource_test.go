@@ -30,10 +30,11 @@ func TestCreateTableResource_Generate(t *testing.T) {
 	}
 	s := NewDDL(pf.Schema(), value.TerraformTableResource).Transform()
 	expect := `resource "snowflake_table" "replace_me" {
-  database            = snowflake_schema.schema.database
-  schema              = snowflake_schema.schema.name
-  name                = "replace me"
-  comment             = "A table."
+  database = snowflake_schema.schema.database
+  schema   = snowflake_schema.schema.name
+  provider = your_snowflake_provider
+  name     = "replace me"
+  comment  = "A table."
 
   column {
     name = "REGISTRATION_DTTM"
