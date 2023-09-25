@@ -29,16 +29,14 @@ func (c *CreateView) indentMetaData() []string {
 
 func (c *CreateView) Generate() string {
 	var rows []string
-	var columns []string
 	for _, v := range c.columns {
 		col := Column{Name: v.Name, Type: v.Type.String()}
-		columns = append(columns, col.Indent())
 		rows = append(rows, NameWithTypeCast{}.Indent(col))
 	}
-	return c.createSQL(columns, rows)
+	return c.createSQL(rows)
 }
 
-func (c *CreateView) createSQL(cols, rows []string) string {
+func (c *CreateView) createSQL(rows []string) string {
 	sql := `SELECT
 %s
 FROM REPLACE.ME;`
