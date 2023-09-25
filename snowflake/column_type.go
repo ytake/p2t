@@ -57,7 +57,7 @@ type NumberType struct {
 }
 
 func (n NumberType) String() string {
-	return "NUMBER"
+	return "NUMBER(38,0)"
 }
 
 func (n NumberType) ColumnCast() []string {
@@ -181,7 +181,7 @@ type TimestampType struct {
 }
 
 func (t TimestampType) String() string {
-	return "TIMESTAMP"
+	return "TIMESTAMP_NTZ(9)"
 }
 
 func (t TimestampType) ColumnCast() []string {

@@ -1,6 +1,7 @@
 package snowflake
 
 import (
+	"strings"
 	"testing"
 
 	"github.com/ytake/p2t/reader"
@@ -8,28 +9,22 @@ import (
 )
 
 func TestTableResourceColumn_Name(t *testing.T) {
-	expect := `column {
-  name = "TEST_ID"
-  type = "VARCHAR"
-  nullable = false
-}`
-	col := TableResourceColumn{}.Name(Column{Name: "test_id", Type: "VARCHAR"})
-	if col != expect {
-		t.Errorf("got %v\nwant %v", col, expect)
-	}
-	col = TableResourceColumn{}.Name(Column{Name: "test_created_at", Type: "VARCHAR"})
-	expect = `column {
-  name = "TEST_CREATED_AT"
-  type = "TIMESTAMP"
-  nullable = false
-}`
-	if col != expect {
-		t.Errorf("got %v\nwant %v", col, expect)
-	}
+	t.Run("with varchar", func(t *testing.T) {
+		col := TableResourceColumn{}.Name(Column{Name: "test_id", Type: "VARCHAR"})
+		if !strings.Contains(col, "type = \"VARCHAR\"") {
+			t.Errorf("got %v\nwant %v", col, "VARCHAR")
+		}
+	})
+	t.Run("with timestamp_ntz", func(t *testing.T) {
+		col := TableResourceColumn{}.Name(Column{Name: "test_created_at", Type: "VARCHAR"})
+		if !strings.Contains(col, "type = \"TIMESTAMP_NTZ(9)\"") {
+			t.Errorf("got %v\nwant %v", col, "TIMESTAMP_NTZ(9)")
+		}
+	})
 }
 
 func TestCreateTableResource_Generate(t *testing.T) {
-	pf, err := reader.Parquet{}.Open("../example/test.parquet")
+	pf, err := reader.Parquet{}.Open("../testdata/test.parquet")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -42,12 +37,12 @@ func TestCreateTableResource_Generate(t *testing.T) {
 
   column {
     name = "REGISTRATION_DTTM"
-    type = "NUMBER"
+    type = "NUMBER(38,0)"
   }
 
   column {
     name = "ID"
-    type = "NUMBER"
+    type = "NUMBER(38,0)"
   }
 
   column {

@@ -14,7 +14,7 @@ func TestNameWithType_Name(t *testing.T) {
 		t.Errorf("got %v\nwant %v", col, expect)
 	}
 	col = NameWithType{}.Name(Column{Name: "test_created_at", Type: "VARCHAR"})
-	expect = "TEST_CREATED_AT TIMESTAMP"
+	expect = "TEST_CREATED_AT TIMESTAMP_NTZ(9)"
 	if col != expect {
 		t.Errorf("got %v\nwant %v", col, expect)
 	}
@@ -27,21 +27,21 @@ func TestNameWithType_Indent(t *testing.T) {
 		t.Errorf("got %v\nwant %v", col, expect)
 	}
 	col = NameWithType{}.Indent(Column{Name: "test_created_at", Type: "VARCHAR"})
-	expect = "    TEST_CREATED_AT TIMESTAMP"
+	expect = "    TEST_CREATED_AT TIMESTAMP_NTZ(9)"
 	if col != expect {
 		t.Errorf("got %v\nwant %v", col, expect)
 	}
 }
 
 func TestCreateTable_Generate(t *testing.T) {
-	pf, err := reader.Parquet{}.Open("../example/test.parquet")
+	pf, err := reader.Parquet{}.Open("../testdata/test.parquet")
 	if err != nil {
 		t.Fatal(err)
 	}
 	s := NewDDL(pf.Schema(), value.Table).Transform()
 	expect := `CREATE OR REPLACE TABLE REPLACE.ME (
-    REGISTRATION_DTTM NUMBER,
-    ID NUMBER,
+    REGISTRATION_DTTM NUMBER(38,0),
+    ID NUMBER(38,0),
     FIRST_NAME VARCHAR,
     LAST_NAME VARCHAR,
     EMAIL VARCHAR,

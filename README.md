@@ -15,17 +15,17 @@ $ go install github.com/ytake/p2t@latest
 create view ddl from parquet file 
 
 ```bash
-$ p2t sf -file ./example/test.parquet -t view
+$ p2t sf -file ./testdata/test.parquet -t view
 ```
 
 create table ddl from parquet file 
 
 ```bash
-$ p2t sf -file ./example/test.parquet -t table
+$ p2t sf -file ./testdata/test.parquet -t table
 ```
 
 create terraform snowflake table resource from parquet file 
 
 ```bash
-$ p2t sf -file ./example/test.parquet -t tf
+$ p2t sf -file ./testdata/test.parquet -t tf
 ```

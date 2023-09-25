@@ -9,6 +9,12 @@ import (
 
 type NameWithTypeCast struct{}
 
+var metaData = []string{
+	fmt.Sprintf("    %s", "METADATA$FILE_LAST_MODIFIED AS FILE_LOAD_DATE"),
+	fmt.Sprintf("    %s", "METADATA$FILENAME AS FILE_NAME"),
+	fmt.Sprintf("    %s", "METADATA$FILE_ROW_NUMBER AS FILE_ROW_NUMBER"),
+}
+
 func NewCreateViewFromStaging(cd []value.ColumnDefinition) *CreateView {
 	return &CreateView{
 		columns: cd,
@@ -27,13 +33,10 @@ func (c *CreateView) Generate() string {
 }
 
 func (c *CreateView) createSQL(cols, rows []string) string {
-	sql := `CREATE OR REPLACE VIEW REPLACE.ME (
-%s
-) AS 
-SELECT
+	sql := `SELECT
 %s
 FROM REPLACE.ME;`
-	return fmt.Sprintf(sql, strings.Join(cols, ",\n"), strings.Join(rows, ",\n"))
+	return fmt.Sprintf(sql, strings.Join(append(rows, metaData...), ",\n"))
 }
 
 // Name is a method for getting fully qualified name.
